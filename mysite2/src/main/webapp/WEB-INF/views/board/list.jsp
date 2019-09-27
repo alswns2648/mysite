@@ -36,7 +36,7 @@
 					</tr>
 					<c:forEach items='${list }' var='vo' varStatus='status'>
 						<tr>
-							<td>${count-5*(param.page-1)-status.index}</td>
+							<td>${param.page-status.index}</td>
 							<td style='text-align:left; padding-left:${15* vo.depth}px;'>
 								<c:if test='${vo.depth > 0 }'>
 									<img
@@ -64,44 +64,6 @@
 						</tr>
 					</c:forEach>
 				</table>
-				
-				<!-- pager 추가 -->
-				<div class="pager">
-					<ul>
-						<li><c:choose>
-								<c:when test="${page_count!=0 }">
-									<a href="${pageContext.servletContext.contextPath }/board?page=${(page_count*5)}&kwd=${param.kwd }">◀ </a>
-								</c:when>
-								<c:otherwise>◀</c:otherwise>
-							</c:choose></li>
-
-						<c:forEach begin='1' end='5' step='1' var='i'>
-
-							<li
-								<c:if test="${param.page==(page_count*5)+i }"> class="selected" </c:if>>
-								<c:choose>
-									<c:when test="${(page_count*5)+i <= (count-1)/5+1}">
-										<a
-											href="${pageContext.servletContext.contextPath }/board?page=${page_count*5+i }&kwd=${param.kwd}">
-											${page_count*5+i } </a>
-									</c:when>
-									<c:otherwise>${page_count*5+i }</c:otherwise>
-								</c:choose>
-							</li>
-
-						</c:forEach>
-
-						<li><c:choose>
-								<c:when test="${(page_count*5)+6 <= (count-1)/5+1}">
-									<a
-										href="${pageContext.servletContext.contextPath }/board?page=${(page_count*5)+6}&kwd=${param.kwd}">
-										▶</a>
-								</c:when>
-								<c:otherwise>▶</c:otherwise>
-							</c:choose></li>
-					</ul>
-				</div>
-				<!-- pager 추가 -->
 
 				<c:if test="${!empty authUser }">
 					<div class="bottom">
