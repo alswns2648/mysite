@@ -31,19 +31,18 @@
 						<th>작성일</th>
 						<th>&nbsp;</th>
 					</tr>
-
+					
+					<c:set var="count" value='${fn:length(board) }' />
 					<c:forEach items='${list }' var='vo' varStatus='status'>
 						<tr>
 							<td>${count - status.index }</td>
 							<td style='text-align:left; padding-left:${20*vo.depth}px;'>
-
 								<c:if test="${vo.depth>0 }">
 									<img
 										src='${pageContext.servletContext.contextPath }/assets/images/reply.png' />
 								</c:if> <c:choose>
 									<c:when test="${vo.status == true}">
-										<a
-											href=" ${pageContext.servletContext.contextPath }/board?a=status&page=${param.page }&no=${vo.no}&kwd=${param.kwd}">
+										<a href=" ${pageContext.servletContext.contextPath }/board?a=status&page=${param.page }&no=${vo.no}&kwd=${param.kwd}">
 											${vo.title } </a>
 									</c:when>
 									<c:otherwise>
@@ -66,7 +65,7 @@
 				<c:if test="${!empty authUser }">
 					<div class="bottom">
 						<a
-							href="${pageContext.servletContext.contextPath }/board?a=writeform&kwd=${param.kwd}"
+							href="${pageContext.servletContext.contextPath }/board/write?&kwd=${param.kwd}"
 							id="new-book">글쓰기</a>
 					</div>
 				</c:if>

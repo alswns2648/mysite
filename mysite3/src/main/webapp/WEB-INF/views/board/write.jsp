@@ -18,8 +18,15 @@
 		<div id="content">
 			<div id="board">
 				<form class="board-form" method="post"
-					action="${pageContext.servletContext.contextPath }/board?a=write">
-					<input type="hidden" name="a" value="write">				
+					action="${pageContext.servletContext.contextPath }/board">
+					<input type="hidden" name="a" value="write">	
+					<c:if test ='${param.no != null }'>
+						<input type = "hidden" name = "g_no" value="${vo.g_no }">
+						<input type = "hidden" name = "o_no" value="${vo.o_no }">
+						<input type = "hidden" name = "depth" value="${vo.depth }">			
+						<input type = "hidden" name = "no" value="${param.no }">
+						<input type = "hidden" name = "kwd" value="${param.kwd }">
+					</c:if>			
 					<table class="tbl-ex">
 						<tr>
 							<th colspan="2">글쓰기</th>

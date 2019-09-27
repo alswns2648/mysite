@@ -18,72 +18,19 @@ public class BoardDao {
 		List<BoardVo> result = sqlSession.selectList("board.getList", kwd);
 		return result;
 	}
-
 	
-//	//list에서 보여지는 정보
-//	public BoardVo get(Long no) {
-//		return sqlSession.selectOne("board.getByNo", no);
-//	}
-//	
-//	//게시물 작성
-//	public Boolean insert(BoardVo vo) {
-//		int count = sqlSession.insert("board.insert", vo);
-//		return count == 1;		
-//	}
-
-	//게시물 내용 보여주기
-//	public BoardVo view(Long no) {
-//		
-//		BoardVo result = new BoardVo();
-//		Connection connection = null;
-//		PreparedStatement pstmt = null;
-//		ResultSet rs = null;
-//		
-//		try {
-//			connection = getConnection();
-//			
-//			String sql = "select no, title, contents, user_no, reg_date "
-//				+ "from board where no = ?" ;
-//			pstmt = connection.prepareStatement(sql);
-//			pstmt.setLong(1,no);
-//			rs = pstmt.executeQuery();
-//			
-//			while(rs.next()){
-//				Long no1= rs.getLong(1);
-//				String title =rs.getString(2);
-//				String contents =rs.getString(3);
-//				Long user_no = rs.getLong(4);
-//				String reg_date = rs.getString(5);
-//				
-//				BoardVo vo= new BoardVo();
-//				vo.setNo(no1);
-//				vo.setTitle(title);
-//				vo.setContents(contents);
-//				vo.setUser_no(user_no);
-//				vo.setReg_date(reg_date);
-//				
-//				result = vo;
-//			}
-//		} catch (SQLException e) {
-//			e.printStackTrace();
-//		} finally {
-//			try {
-//				if(rs != null) {
-//					rs.close();
-//				}
-//				if(pstmt != null) {
-//					pstmt.close();
-//				}
-//				if(connection != null) {
-//					connection.close();
-//				}
-//			} catch (SQLException e) {
-//				e.printStackTrace();
-//			}
-//		}
-//		
-//		return result;
-//	}
+	//선택한 게시물 내용 보여주기
+	public BoardVo get(Long no) {
+		return sqlSession.selectOne("board.getByNo", no);
+	}
+	
+	//게시물 작성
+	public Boolean insert(BoardVo vo) {
+		int count = sqlSession.insert("board.insert", vo);
+		return count == 1;		
+	}
+	
+	
 	
 //	public boolean modify(BoardVo vo) {
 //		Boolean result = false;

@@ -20,10 +20,9 @@
 		<c:import url="/WEB-INF/views/includes/header.jsp" />
 		<div id="content">
 			<div id="board">
-				<form id="search_form" action="${pageContext.servletContext.contextPath }/board" method="post">
-				<input type="hidden" id="page" name="page" value="1">
-				<input type="text" id="kwd" name="kwd" value=""> 
-				<input type="submit" value="찾기">
+				<form id="search_form" action="" method="post">
+					<input type="text" id="kwd" name="kwd" value=""> <input
+						type="submit" value="찾기">
 				</form>
 				<table class="tbl-ex">
 					<tr>
@@ -34,9 +33,12 @@
 						<th>작성일</th>
 						<th>&nbsp;</th>
 					</tr>
-					<c:forEach items='${list }' var='vo' varStatus='status'>
+
+
+					<c:set var="count" value='${fn:length(board) }' />
+					<c:forEach items='${board }' var='vo' varStatus='status'>
 						<tr>
-							<td>${param.page-status.index}</td>
+							<td>${count - status.index }</td>
 							<td style='text-align:left; padding-left:${15* vo.depth}px;'>
 								<c:if test='${vo.depth > 0 }'>
 									<img
@@ -44,8 +46,8 @@
 
 								</c:if> <c:choose>
 									<c:when test='${vo.status == true }'>
-										<a
-											href="${pageContext.servletContext.contextPath}/board?a=view&no=${vo.no}&username=${vo.user_name}">${vo.title}</a>
+										<a href=" ${pageContext.servletContext.contextPath }/board?a=status&page=${param.page }&no=${vo.no}&kwd=${param.kwd}">
+											${vo.title } </a>
 									</c:when>
 									<c:otherwise>
 									삭제된 게시물 입니다
@@ -58,7 +60,7 @@
 							<td><c:if
 									test='${(not empty authUser) and authUser.no == vo.user_no and vo.status == true}'>
 									<a
-										href="${pageContext.servletContext.contextPath }/board?a=delete&page=${param.page}&no=${vo.no}&kwd=${param.kwd}"
+										href="${pageContext.servletContext.contextPath }/board?a=delete&no=${vo.no }"
 										class="del">삭제</a>
 								</c:if></td>
 						</tr>
@@ -67,8 +69,9 @@
 
 				<c:if test="${!empty authUser }">
 					<div class="bottom">
-						<a href="${pageContext.servletContext.contextPath }/board?a=writeform&page=${param.page}&kwd=${param.kwd}"
-							 id="new-book">글쓰기</a>
+						<a
+							href="${pageContext.servletContext.contextPath }/board?a=writeform&kwd=${param.kwd}"
+							id="new-book">글쓰기</a>
 					</div>
 				</c:if>
 			</div>

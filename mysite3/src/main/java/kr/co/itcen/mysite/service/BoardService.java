@@ -18,11 +18,12 @@ public class BoardService {
 		return boardDao.getList(kwd);
 	}
 	
-//	public BoardVo get(Long no) {
-//		return boardDao.get(no);
-//	}
-//	
-//	public void insert(BoardVo vo) {
-//		boardDao.insert(vo);
-//	}
+	//선택 게시물 내용 보여주기
+	public BoardVo get(Long no) {
+		return boardDao.get(no);
+	}
+	//게시물 작성
+	public void insert(BoardVo vo) {
+		boardDao.insert(vo);
+	}
 }

@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="board">
-	<select id="getList" parameterType="String" resultType="boardvo">
+	<select id="getList" resultType="boardvo">
 		<![CDATA[
 		select board.title as title, 
 				user.no as user_no, 
@@ -14,44 +14,34 @@
 				board.status as status
 			from board, user 
 			where board.user_no = user.no 
-			and (title Like '%'||#{kwd }||'%' or contents Like '%'||#{kwd }||'%')
 		order by g_no desc, o_no asc Limit 0, 5	
 		]]>
 	</select>	
 	
-<!-- <select id="getByNo" parameterType="long" resultType="boardvo">
+<select id="getByNo" parameterType="long" resultType="boardvo">
 		<![CDATA[
- 			   title, 
-			   hit,  
- 			   date_format(reg_date, '%Y-%m-%d %h:%i:%s'), 
-			   depth,  
- 			   o_no,  
-			   g_no, 
- 			   contents 
-			from board a  
- 			where no=#{no } 
-		]]>
-	</select> -->
+		select title,
+  			   contents, 
+ 			   hit, 
+  			   date_format(reg_date, '%Y-%m-%d %h:%i:%s'), 
+ 			   depth, 
+  			   o_no, 
+ 			   g_no, 
+ 			from board 
+  			where no=#{no } 
+- 		]]>
+	</select> 
 	
-<!-- 	<insert id="insert" parameterType="boardvo"> -->
-<!-- 		<![CDATA[ -->
-<!-- 		insert into board  -->
-<!-- 		values(null,  -->
-<!-- 				#{user_no },  -->
-<!-- 				#{title },  -->
-<!-- 				0,  -->
-<!-- 				now(),  -->
-<!-- 				select ifnull(max(g_no)+1,1) from board,  -->
-<!-- 				1,  -->
-<!-- 				0,  -->
-<!-- 				?,  -->
-<!-- 				true) -->
-<!-- 		]]> -->
-<!-- 		<selectKey keyProperty="no" resultType="long" order="AFTER"> -->
-<!-- 			<![CDATA[ -->
-<!-- 			select last_insert_id() -->
-<!-- 			]]> -->
-<!-- 		</selectKey> -->
-<!-- 	</insert> -->
+	<insert id="insert" parameterType="boardvo">
+		<![CDATA[
+ 		insert 
+ 		into board 
+ 		values(null, #{title }, #{contents }, 0, 
+ 		now(), (select ifnull(max(b.g_no)+1,1) from board as b), 
+ 		1,  0, #{user_no }, true)
+		]]>
+	</insert>
+	
+	
 
 </mapper>
