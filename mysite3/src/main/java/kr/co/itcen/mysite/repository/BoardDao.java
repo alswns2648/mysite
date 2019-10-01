@@ -1,7 +1,8 @@
 package kr.co.itcen.mysite.repository;
 
+import java.util.HashMap;
 import java.util.List;
-
+import java.util.Map;
 
 import org.apache.ibatis.session.SqlSession;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,8 +15,18 @@ public class BoardDao {
 	@Autowired
 	private SqlSession sqlSession;
 	
-	public List<BoardVo> getList(String kwd) {
-		List<BoardVo> result = sqlSession.selectList("board.getList", kwd);
+	public List<BoardVo> getList(String kwd, int page) {
+		Map<String, Object> map = new HashMap<String, Object>();
+		map.put("page", (page-1)*5);
+		List<BoardVo> result = null;
+		
+		if(kwd!=null && kwd.length() != 0) {
+			map.put("kwd", "%"+kwd+"%");
+			result = sqlSession.selectList("board.getkwd", map);
+		}else {
+			result = sqlSession.selectList("board.getList", map);
+		}
+		
 		return result;
 	}
 	
@@ -25,164 +36,45 @@ public class BoardDao {
 	}
 	
 	//게시물 작성
-	public Boolean insert(BoardVo vo) {
+	public boolean insert(BoardVo vo) {
 		int count = sqlSession.insert("board.insert", vo);
 		return count == 1;		
 	}
 	
+	public boolean modify(BoardVo vo) {
+		int count = sqlSession.update("board.update", vo);
+		return count == 1;
+	}
 	
-	
-//	public boolean modify(BoardVo vo) {
-//		Boolean result = false;
-//		Connection connection = null;
-//		PreparedStatement pstmt = null;
-//		try {
-//			connection = getConnection();
-//
-//			String sql = "update board set title = ?, contents = ? where no = ?";
-//			pstmt = connection.prepareStatement(sql);
-//			pstmt.setString(1, vo.getTitle());
-//			pstmt.setString(2, vo.getContents());
-//			pstmt.setLong(3, vo.getNo());
-//			
-//			int count = pstmt.executeUpdate();
-//			result = (count == 1);
-//			
-//		} catch (SQLException e) {
-//			e.printStackTrace();
-//		} finally {
-//			try {
-//				if (pstmt != null) {
-//					pstmt.close();
-//				}
-//				if (connection != null) {
-//					connection.close();
-//				}
-//			} catch (SQLException e) {
-//				e.printStackTrace();
-//			}
-//		}
-//		return result;
-//	}
-//	
-//	public void delete(Long no) {
-//		Connection connection = null;
-//		PreparedStatement pstmt = null;
-//
-//		try {
-//			connection = getConnection();
-//
-//			String sql =" update board set status=false where no = ?";
-//
-//			pstmt = connection.prepareStatement(sql);
-//			pstmt.setLong(1, no);
-//
-//			pstmt.executeUpdate();
-//
-//		} catch (SQLException e) {
-//			e.printStackTrace();
-//		} finally {
-//			try {
-//				if(pstmt != null) {
-//					pstmt.close();
-//				}
-//				if(connection != null) {
-//					connection.close();
-//				}
-//			} catch (SQLException e) {
-//				e.printStackTrace();
-//			}
-//		}		
-//	}	
+	public boolean delete(Long no) {
+		int count = sqlSession.update("board.delete", no);
+		return count == 1;
+	}	
 	
 	//리플남기는 메소드 추가 reply
-//	public boolean reply(BoardVo vo) {
-//		Boolean result = false;
-//		Connection connection = null;
-//		PreparedStatement pstmt = null;
-//		ResultSet rs = null;
-//
-//		try {
-//			connection = getConnection();
-//
-//			String sql = "update board set o_no = o_no+1 where g_no = ? and o_no >= ?";
-//			pstmt = connection.prepareStatement(sql);
-//			pstmt.setInt(1, vo.getG_no());
-//			pstmt.setInt(2, vo.getO_no());
-//			pstmt.executeUpdate();
-//
-//			String sql1 = "insert into board values(null, ?, ?, 0, now(), ?, ?, ?, ?, true)";
-//			pstmt = connection.prepareStatement(sql1);
-//			pstmt.setString(1, vo.getTitle());
-//			pstmt.setString(2, vo.getContents());
-//			pstmt.setInt(3, vo.getG_no());	
-//			pstmt.setInt(4, vo.getO_no());
-//			pstmt.setInt(5, vo.getDepth());
-//			pstmt.setLong(6, vo.getUser_no());
-//
-//
-//			int count = pstmt.executeUpdate();
-//			result = (count == 1);
-//
-//
-//		} catch (SQLException e) {
-//			e.printStackTrace();
-//		} finally {
-//			try {
-//
-//				if(pstmt != null) {
-//					pstmt.close();
-//				}
-//
-//				if(connection != null) {
-//					connection.close();
-//				}
-//			} catch (SQLException e) {
-//				e.printStackTrace();
-//			}
-//		}
-//
-//		return result;	
-//
-//	}
-//	
-//	public boolean visit(Long no) {
-//		Boolean result = false;
-//
-//		Connection connection = null;
-//		PreparedStatement pstmt = null;
-//		ResultSet rs = null;
-//
-//		try {
-//			connection = getConnection();
-//
-//			String sql = "update board set hit = hit+1 where no=?";
-//			pstmt = connection.prepareStatement(sql);
-//			pstmt.setLong(1, no);
-//			int count = pstmt.executeUpdate();
-//
-//			result = (count == 1);
-//
-//
-//		} catch (SQLException e) {
-//			System.out.println("error:" + e);
-//		} finally {
-//			try {
-//
-//				if(pstmt != null) {
-//					pstmt.close();
-//				}
-//
-//				if(connection != null) {
-//					connection.close();
-//				}
-//			} catch (SQLException e) {
-//				e.printStackTrace();
-//			}
-//		}
-//
-//		return result;	
-//
-//	}
+	public boolean updateReply(BoardVo vo) {
+		int count = sqlSession.update("board.updatereply", vo);
+		return count >= 0;
+	}
 
+	public boolean insertReply(BoardVo vo) {
+		int count = sqlSession.insert("board.insertreply", vo);
+		return count >= 0;
+	}
+	
+	//조회수
+	public void visit(Long no) {
+		sqlSession.update("board.visit", no);	
+	}
+	
+	public int getCount(String kwd) {
+		int count = 0;
+		if(kwd!=null && kwd.length() != 0) {
+			kwd = "%"+kwd+"%";
+			count = sqlSession.selectOne("board.getCountkwd",kwd);
+		}else {
+			count = sqlSession.selectOne("board.getCount");
+		}
+		return count;
+	}
 }

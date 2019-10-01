@@ -46,7 +46,7 @@
 
 								</c:if> <c:choose>
 									<c:when test='${vo.status == true }'>
-										<a href=" ${pageContext.servletContext.contextPath }/board?a=status&page=${param.page }&no=${vo.no}&kwd=${param.kwd}">
+										<a href=" ${pageContext.servletContext.contextPath }/board/view/${vo.no}?page=${param.page }&kwd=${param.kwd}">
 											${vo.title } </a>
 									</c:when>
 									<c:otherwise>

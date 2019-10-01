@@ -14,8 +14,8 @@ public class BoardService {
 	@Autowired
 	private BoardDao boardDao;
 	
-	public List<BoardVo> getList(String kwd) {
-		return boardDao.getList(kwd);
+	public List<BoardVo> getList(String kwd, int page) {
+		return boardDao.getList(kwd, page);
 	}
 	
 	//선택 게시물 내용 보여주기
@@ -26,4 +26,33 @@ public class BoardService {
 	public void insert(BoardVo vo) {
 		boardDao.insert(vo);
 	}
+
+	//게시물 수정
+	public void modify(BoardVo vo) {
+		boardDao.modify(vo);
+	}
+	
+	//게시물 삭제
+	public void delete(Long no) {
+		boardDao.delete(no);
+	}
+	
+	//답글 달기
+	public void updateReply(BoardVo vo) {
+		boardDao.updateReply(vo);
+	}
+
+	public void insertReply(BoardVo vo) {
+		boardDao.insertReply(vo);
+	}
+	
+	//조회수
+	public void visit(Long no) {
+		boardDao.visit(no);
+	}
+	
+	public int getCount(String kwd) {
+		return boardDao.getCount(kwd);
+	}
+	
 }

@@ -3,6 +3,9 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn"%>
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
+<%
+	pageContext.setAttribute("nextLine", '\n');
+%>
 <!DOCTYPE html>
 <html>
 <head>
@@ -30,16 +33,15 @@
 					<tr>
 						<td class="label">내용</td>
 						<td>
-							<% pageContext.setAttribute("newLineChar", "\n"); %>
-							<div class="view-content">
-								내용이지롱 // no로 받아 와서 내용 출력
-							</div>
-						</td>
+						${fn:replace(vo.contents, nextLine ,'<br>')}</td>
 					</tr>
 				</table>
 				<div class="bottom">
-					<a href="${pageContext.servletContext.contextPath }/board?a=list">글목록</a> 
-					<a href="${pageContext.servletContext.contextPath }/board?a=modifyform">글수정</a>
+					<a href="${pageContext.servletContext.contextPath }/board/list?kwd=${kwd }&page=${page }">글목록</a> 
+					<c:if test='${authUser.no != null }'>
+					<a href="${pageContext.servletContext.contextPath }/board/modify/${vo.no }?page=${param.page}">글수정</a>
+					<a href="${pageContext.servletContext.contextPath }/board/write?page=${param.page}&no=${vo.no }&kwd=${param.kwd}">답글달기</a>
+					</c:if>
 				</div>
 			</div>
 		</div>

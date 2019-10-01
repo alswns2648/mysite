@@ -18,14 +18,13 @@
 		<div id="content">
 			<div id="board">
 				<form class="board-form" method="post"
-					action="${pageContext.servletContext.contextPath }/board">
-					<input type="hidden" name="a" value="write">	
-					<c:if test ='${param.no != null }'>
+					action="${pageContext.servletContext.contextPath }/board/write">
+					<input type = "hidden" name = "kwd" value="${param.kwd }">
+					<input type = "hidden" name = "no" value="${vo.no }">
+					<c:if test ='${vo.no != null }'>
 						<input type = "hidden" name = "g_no" value="${vo.g_no }">
 						<input type = "hidden" name = "o_no" value="${vo.o_no }">
-						<input type = "hidden" name = "depth" value="${vo.depth }">			
-						<input type = "hidden" name = "no" value="${param.no }">
-						<input type = "hidden" name = "kwd" value="${param.kwd }">
+						<input type = "hidden" name = "depth" value="${vo.depth }">	
 					</c:if>			
 					<table class="tbl-ex">
 						<tr>
@@ -37,7 +36,7 @@
 						</tr>
 						<tr>
 							<td class="label">내용</td>
-							<td><textarea id="content" name="content"></textarea></td>
+							<td><textarea id="content" name="contents"></textarea></td>
 						</tr>
 					</table>
 					<div class="bottom">

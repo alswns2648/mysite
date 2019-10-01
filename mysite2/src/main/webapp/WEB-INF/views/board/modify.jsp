@@ -15,7 +15,7 @@
 		<c:import url="/WEB-INF/views/includes/header.jsp" />
 		<div id="content">
 			<div id="board">
-				<form class="board-form" method="post" action="${pageContext.servletContext.contextPath }/board">
+				<form class="board-form" method="post" action="${pageContext.servletContext.contextPath }/board/${vo.no}">
 					<table class="tbl-ex">
 						<tr>
 							<th colspan="2">글수정</th>

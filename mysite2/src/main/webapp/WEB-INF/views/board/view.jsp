@@ -41,7 +41,7 @@
 					<a href="${pageContext.servletContext.contextPath }/board?page=${param.page}&kwd=${param.kwd}">글목록</a> 
 					
 					<c:if test='${authUser.no != null }'>
-					<a href="${pageContext.servletContext.contextPath }/board?a=modifyform&page=${param.page}&no=${param.no}&kwd=${param.kwd}">글수정</a>
+					<a href="${pageContext.servletContext.contextPath }/board?a=modifyform&page=${param.page}&no=${param.no}">글수정</a>
 					
 					</c:if>
 					

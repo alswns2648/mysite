@@ -4,8 +4,9 @@
 
 	<insert id="insert" parameterType="uservo">
 		<![CDATA[
-		insert into user 
-			values (null, #{name }, #{email }, #{password }, #{gender }, now())
+		insert
+		  into user
+		values (null, #{name }, #{email }, #{password }, #{gender }, now())
 		]]>
 		<selectKey keyProperty="no" resultType="long" order="AFTER">
 			<![CDATA[
@@ -16,39 +17,53 @@
 	
 	<select id="getByEmailAndPassword1" parameterType="uservo" resultType="uservo">
 		<![CDATA[
-		select no, name from user 
-			where email = #{email } and password = #{password }
+		select no, name 
+		  from user
+		 where email = #{email }
+		   and password = #{password }		
 		]]>
 	</select>
 	
 	<select id="getByNo" parameterType="long" resultType="uservo">
 		<![CDATA[
-		select no, name, email, gender
-			from user 
-			where no = #{no }
+		select no, name, email, gender 
+		  from user
+		 where no = #{no }		
+		]]>
+	</select>
+	
+	<select id="getByEmail" parameterType="string" resultType="uservo">
+		<![CDATA[
+		select no, email
+		  from user
+		 where email = #{email }		
 		]]>
 	</select>
 	
 	<select id="getByEmailAndPassword2" parameterType="map" resultType="uservo">
 		<![CDATA[
-		select no, name from user 
-			where email = #{email } and password = #{password }
+		select no, name 
+		  from user
+		 where email = #{email }
+		   and password = #{password }		
 		]]>
 	</select>
 	
 	<update id="update" parameterType="uservo">
 		<![CDATA[
-		update user 
-			set name = #{name }, 
-		]]>
-		<if test="password != ''">
+        update user
+           set name = #{name },
+        ]]>            
+        <if test=" password != '' ">   
 			<![CDATA[
-			password = #{password },
+               password = #{password },
 			]]>
-		</if> 
+        </if>       
 		<![CDATA[
-			gender = #{gender } 
-		where no = #{no }
+               gender = #{gender }
+         where no = #{no }
 		]]>
 	</update>
+
+
 </mapper>

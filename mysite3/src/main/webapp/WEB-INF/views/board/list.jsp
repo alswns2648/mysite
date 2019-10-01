@@ -18,8 +18,11 @@
 		<c:import url="/WEB-INF/views/includes/header.jsp" />
 		<div id="content">
 			<div id="board">
-				<form id="search_form" action="" method="post">
-					<input type="text" id="kwd" name="kwd" value=""> <input
+				<form id="search_form"
+					action="${pageContext.servletContext.contextPath }/board/list"
+					method="post">
+					<input type="hidden" id="page" name="page" value="1"> <input
+						type="text" id="kwd" name="kwd" value=""> <input
 						type="submit" value="찾기">
 				</form>
 				<table class="tbl-ex">
@@ -31,18 +34,18 @@
 						<th>작성일</th>
 						<th>&nbsp;</th>
 					</tr>
-					
-					<c:set var="count" value='${fn:length(board) }' />
+
 					<c:forEach items='${list }' var='vo' varStatus='status'>
 						<tr>
-							<td>${count - status.index }</td>
+							<td>${count-5*(param.page-1)-status.index}</td>
 							<td style='text-align:left; padding-left:${20*vo.depth}px;'>
 								<c:if test="${vo.depth>0 }">
 									<img
 										src='${pageContext.servletContext.contextPath }/assets/images/reply.png' />
 								</c:if> <c:choose>
 									<c:when test="${vo.status == true}">
-										<a href=" ${pageContext.servletContext.contextPath }/board?a=status&page=${param.page }&no=${vo.no}&kwd=${param.kwd}">
+										<a
+											href=" ${pageContext.servletContext.contextPath }/board/view/${vo.no }?page=${param.page }&kwd=${param.kwd }">
 											${vo.title } </a>
 									</c:when>
 									<c:otherwise>
@@ -56,16 +59,57 @@
 							<td><c:if
 									test='${(not empty authUser) and authUser.no == vo.user_no and vo.status == true}'>
 									<a
-										href="${pageContext.servletContext.contextPath }/board?a=delete&no=${vo.no }"
+										href="${pageContext.servletContext.contextPath }/board/delete/${vo.no }"
 										class="del">삭제</a>
 								</c:if></td>
 						</tr>
 					</c:forEach>
 				</table>
+				<!-- pager -->
+				<div class="pager">
+					<ul>
+						<li>
+							<c:choose>
+								<c:when test="${page_count!=0 }">
+									<a
+										href="${pageContext.servletContext.contextPath }/board/list?page=${(page_count*5)}&kwd=${kwd }">
+										◀ </a>
+								</c:when>
+								<c:otherwise>◀</c:otherwise>
+							</c:choose>
+						</li>
+
+						<c:forEach begin='1' end='5' step='1' var='i'>
+
+							<li
+								<c:if test="${page==(page_count*5)+i }">  </c:if>>
+								<c:choose>
+									<c:when test="${(page_count*5)+i <= (count-1)/5+1}">
+										<a
+											href="${pageContext.servletContext.contextPath }/board/list?page=${page_count*5+i }&kwd=${kwd}">
+											${page_count*5+i } </a>
+									</c:when>
+									<c:otherwise>${page_count*5+i }</c:otherwise>
+								</c:choose>
+							</li>
+
+						</c:forEach>
+
+						<li><c:choose>
+								<c:when test="${(page_count*5)+6 <= (count-1)/5+1}">
+									<a
+										href="${pageContext.servletContext.contextPath }/board/list?page=${(page_count*5)+6}&kwd=${kwd}">
+										▶</a>
+								</c:when>
+								<c:otherwise>▶</c:otherwise>
+							</c:choose>
+						
+					</ul>
+				</div>
 				<c:if test="${!empty authUser }">
 					<div class="bottom">
 						<a
-							href="${pageContext.servletContext.contextPath }/board/write?&kwd=${param.kwd}"
+							href="${pageContext.servletContext.contextPath }/board/write?kwd=${kwd}"
 							id="new-book">글쓰기</a>
 					</div>
 				</c:if>
